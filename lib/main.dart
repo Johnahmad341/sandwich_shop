@@ -104,13 +104,19 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
+            // ignore: prefer_const_constructors
+            Text(
               'Welcome to my Shop!',
+              // ignore: prefer_const_constructors
               style: TextStyle(
                 fontSize: 30.0,
                 color: Colors.purple,
                 fontWeight: FontWeight.bold
-            ))  
+            )),
+             Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
           ],
         ),
       ),
