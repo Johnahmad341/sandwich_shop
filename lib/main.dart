@@ -14,7 +14,7 @@ class App extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title:const Text('Sandwich Counter')),
         body: const Center(
-          child: Text('Welcome to the Sandwich Shop!')  ,
+          child: OrderItemDisplay(5, 'Footlong'),
         ),
         )
       );
@@ -25,7 +25,7 @@ class OrderItemDisplay extends StatelessWidget {
   final String itemType;
   final int quantity;
 
-  const OrderItemDisplay(this.quantity, this.itemType, {super.key})
+  const OrderItemDisplay(this.quantity, this.itemType, {super.key});
 
   @override
   Widget build(BuildContext context) {
