@@ -52,7 +52,12 @@ class OrderItemDisplay extends StatelessWidget {
     // return Center(child:
     //         Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}'));
     return Row(
-      children: [Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}'),],);
+      children: [Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}',
+      style: TextStyle(
+        color: Colors.green,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),),],);
   }
 }
 
