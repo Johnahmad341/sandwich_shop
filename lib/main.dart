@@ -13,51 +13,107 @@ class App extends StatelessWidget {
       title: 'Sandwich Shop App',
       home: Scaffold(
         appBar: AppBar(title:const Text('Sandwich Counter')),
-        body: SingleChildScrollView(
+        body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            if (constraints.maxWidth < 600) {
+              return Column(
+                children: [
+                  OrderItemDisplay(10, 'Turkey'),
+                  OrderItemDisplay(5, 'Ham'),
+                  OrderItemDisplay(3, 'Club'),
+                  OrderItemDisplay(2, 'Veggie'),
+                  OrderItemDisplay(4, 'Turkey'),
+                  OrderItemDisplay(1, 'BLT'),
+                  OrderItemDisplay(5, 'Turkey'),
+                  OrderItemDisplay(2, 'Ham'),
+                  OrderItemDisplay(3, 'Club'),
+                  OrderItemDisplay(4, 'Veggie'),
+                  OrderItemDisplay(1, 'Turkey'),
+                  OrderItemDisplay(5, 'BLT'),
+                  OrderItemDisplay(3, 'Ham'),
+                  OrderItemDisplay(2, 'Club'),
+                  OrderItemDisplay(4, 'Veggie'),
+                  OrderItemDisplay(1, 'Turkey'),
+                  OrderItemDisplay(5, 'Ham'),
+                  OrderItemDisplay(3, 'Club'),
+                  OrderItemDisplay(2, 'Veggie'),
+                  OrderItemDisplay(4, 'Turkey'),
+                ],
+              );
+            }
+            else {
+              return Row(
+                children: [
+                  OrderItemDisplay(10, 'Turkey'),
+                  OrderItemDisplay(5, 'Ham'),
+                  OrderItemDisplay(3, 'Club'),
+                  OrderItemDisplay(2, 'Veggie'),
+                  OrderItemDisplay(4, 'Turkey'),
+                  OrderItemDisplay(1, 'BLT'),
+                  OrderItemDisplay(5, 'Turkey'),
+                  OrderItemDisplay(2, 'Ham'),
+                  OrderItemDisplay(3, 'Club'),
+                  OrderItemDisplay(4, 'Veggie'),
+                  OrderItemDisplay(1, 'Turkey'),
+                  OrderItemDisplay(5, 'BLT'),
+                  OrderItemDisplay(3, 'Ham'),
+                  OrderItemDisplay(2, 'Club'),
+                  OrderItemDisplay(4, 'Veggie'),
+                  OrderItemDisplay(1, 'Turkey'),
+                  OrderItemDisplay(5, 'Ham'),
+                  OrderItemDisplay(3, 'Club'),
+                  OrderItemDisplay(2, 'Veggie'),
+                  OrderItemDisplay(4, 'Turkey'),
+                ],
+              );
+            }
+          } 
+        // SingleChildScrollView(
 
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // Row(
-                //   crossAxisAlignment: CrossAxisAlignment.end,
-                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //   children: [
-                //     OrderItemDisplay(5, 'Club'),
-                //     OrderItemDisplay(3, 'BLT'),
-                //     OrderItemDisplay(2, 'Veggie'),
-                //   ],
-                // ),
-                OrderItemDisplay(10, 'Turkey'),
-                OrderItemDisplay(5, 'Ham'),
-                OrderItemDisplay(3, 'Club'),
-                OrderItemDisplay(2, 'Veggie'),
-                OrderItemDisplay(4, 'Turkey'),
-                OrderItemDisplay(1, 'BLT'),
-                OrderItemDisplay(5, 'Turkey'),
-                OrderItemDisplay(2, 'Ham'),
-                OrderItemDisplay(3, 'Club'),
-                OrderItemDisplay(4, 'Veggie'),
-                OrderItemDisplay(1, 'Turkey'),
-                OrderItemDisplay(5, 'BLT'),
-                OrderItemDisplay(3, 'Ham'),
-                OrderItemDisplay(2, 'Club'),
-                OrderItemDisplay(4, 'Veggie'),
-                OrderItemDisplay(1, 'Turkey'),
-                OrderItemDisplay(5, 'Ham'),
-                OrderItemDisplay(3, 'Club'),
-                OrderItemDisplay(2, 'Veggie'),
-                OrderItemDisplay(4, 'Turkey'),
-                SizedBox(height: 200),
-                Container(
-                  width: 400,
-                  height: 200,
-                  color: Colors.blue,
-                  child: OrderItemDisplay(5, 'Footlong')
-                )
-              ],
-            ),
-        )
+        //   child: Column(
+        //       mainAxisAlignment: MainAxisAlignment.start,
+        //       children: [
+        //         // Row(
+        //         //   crossAxisAlignment: CrossAxisAlignment.end,
+        //         //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //         //   children: [
+        //         //     OrderItemDisplay(5, 'Club'),
+        //         //     OrderItemDisplay(3, 'BLT'),
+        //         //     OrderItemDisplay(2, 'Veggie'),
+        //         //   ],
+        //         // ),
+        //         OrderItemDisplay(10, 'Turkey'),
+        //         OrderItemDisplay(5, 'Ham'),
+        //         OrderItemDisplay(3, 'Club'),
+        //         OrderItemDisplay(2, 'Veggie'),
+        //         OrderItemDisplay(4, 'Turkey'),
+        //         OrderItemDisplay(1, 'BLT'),
+        //         OrderItemDisplay(5, 'Turkey'),
+        //         OrderItemDisplay(2, 'Ham'),
+        //         OrderItemDisplay(3, 'Club'),
+        //         OrderItemDisplay(4, 'Veggie'),
+        //         OrderItemDisplay(1, 'Turkey'),
+        //         OrderItemDisplay(5, 'BLT'),
+        //         OrderItemDisplay(3, 'Ham'),
+        //         OrderItemDisplay(2, 'Club'),
+        //         OrderItemDisplay(4, 'Veggie'),
+        //         OrderItemDisplay(1, 'Turkey'),
+        //         OrderItemDisplay(5, 'Ham'),
+        //         OrderItemDisplay(3, 'Club'),
+        //         OrderItemDisplay(2, 'Veggie'),
+        //         OrderItemDisplay(4, 'Turkey'),
+        //         SizedBox(height: 200),
+        //         Container(
+        //           width: 400,
+        //           height: 200,
+        //           color: Colors.blue,
+        //           child: OrderItemDisplay(5, 'Footlong')
+        //         )
+        //       ],
+        //     ),
+        // )
         ),
+        )
       );
   }
 }
