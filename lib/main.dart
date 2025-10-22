@@ -12,7 +12,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Sandwich Shop App',
       home: Scaffold(
-        appBar: AppBar(title:const Text('Sandwich Counter')),
+        appBar: AppBar(title: const Text('Sandwich Counter')),
         body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             if (constraints.maxWidth < 600) {
@@ -40,8 +40,7 @@ class App extends StatelessWidget {
                   OrderItemDisplay(4, 'Turkey'),
                 ],
               );
-            }
-            else {
+            } else {
               return Row(
                 children: [
                   OrderItemDisplay(10, 'Turkey'),
@@ -67,54 +66,54 @@ class App extends StatelessWidget {
                 ],
               );
             }
-          } 
-        // SingleChildScrollView(
+          },
+          // SingleChildScrollView(
 
-        //   child: Column(
-        //       mainAxisAlignment: MainAxisAlignment.start,
-        //       children: [
-        //         // Row(
-        //         //   crossAxisAlignment: CrossAxisAlignment.end,
-        //         //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //         //   children: [
-        //         //     OrderItemDisplay(5, 'Club'),
-        //         //     OrderItemDisplay(3, 'BLT'),
-        //         //     OrderItemDisplay(2, 'Veggie'),
-        //         //   ],
-        //         // ),
-        //         OrderItemDisplay(10, 'Turkey'),
-        //         OrderItemDisplay(5, 'Ham'),
-        //         OrderItemDisplay(3, 'Club'),
-        //         OrderItemDisplay(2, 'Veggie'),
-        //         OrderItemDisplay(4, 'Turkey'),
-        //         OrderItemDisplay(1, 'BLT'),
-        //         OrderItemDisplay(5, 'Turkey'),
-        //         OrderItemDisplay(2, 'Ham'),
-        //         OrderItemDisplay(3, 'Club'),
-        //         OrderItemDisplay(4, 'Veggie'),
-        //         OrderItemDisplay(1, 'Turkey'),
-        //         OrderItemDisplay(5, 'BLT'),
-        //         OrderItemDisplay(3, 'Ham'),
-        //         OrderItemDisplay(2, 'Club'),
-        //         OrderItemDisplay(4, 'Veggie'),
-        //         OrderItemDisplay(1, 'Turkey'),
-        //         OrderItemDisplay(5, 'Ham'),
-        //         OrderItemDisplay(3, 'Club'),
-        //         OrderItemDisplay(2, 'Veggie'),
-        //         OrderItemDisplay(4, 'Turkey'),
-        //         SizedBox(height: 200),
-        //         Container(
-        //           width: 400,
-        //           height: 200,
-        //           color: Colors.blue,
-        //           child: OrderItemDisplay(5, 'Footlong')
-        //         )
-        //       ],
-        //     ),
-        // )
+          //   child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.start,
+          //       children: [
+          //         // Row(
+          //         //   crossAxisAlignment: CrossAxisAlignment.end,
+          //         //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //         //   children: [
+          //         //     OrderItemDisplay(5, 'Club'),
+          //         //     OrderItemDisplay(3, 'BLT'),
+          //         //     OrderItemDisplay(2, 'Veggie'),
+          //         //   ],
+          //         // ),
+          //         OrderItemDisplay(10, 'Turkey'),
+          //         OrderItemDisplay(5, 'Ham'),
+          //         OrderItemDisplay(3, 'Club'),
+          //         OrderItemDisplay(2, 'Veggie'),
+          //         OrderItemDisplay(4, 'Turkey'),
+          //         OrderItemDisplay(1, 'BLT'),
+          //         OrderItemDisplay(5, 'Turkey'),
+          //         OrderItemDisplay(2, 'Ham'),
+          //         OrderItemDisplay(3, 'Club'),
+          //         OrderItemDisplay(4, 'Veggie'),
+          //         OrderItemDisplay(1, 'Turkey'),
+          //         OrderItemDisplay(5, 'BLT'),
+          //         OrderItemDisplay(3, 'Ham'),
+          //         OrderItemDisplay(2, 'Club'),
+          //         OrderItemDisplay(4, 'Veggie'),
+          //         OrderItemDisplay(1, 'Turkey'),
+          //         OrderItemDisplay(5, 'Ham'),
+          //         OrderItemDisplay(3, 'Club'),
+          //         OrderItemDisplay(2, 'Veggie'),
+          //         OrderItemDisplay(4, 'Turkey'),
+          //         SizedBox(height: 200),
+          //         Container(
+          //           width: 400,
+          //           height: 200,
+          //           color: Colors.blue,
+          //           child: OrderItemDisplay(5, 'Footlong')
+          //         )
+          //       ],
+          //     ),
+          // )
         ),
-        )
-      );
+      ),
+    );
   }
 }
 
@@ -130,12 +129,17 @@ class OrderItemDisplay extends StatelessWidget {
     //         Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}'));
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [Text('$quantity $itemType sandwich(es): ${'🥪' * quantity}',
-      style: TextStyle(
-        color: Colors.green,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),),],);
+      children: [
+        Text(
+          '$quantity $itemType sandwich(es): ${'🥪' * quantity}',
+          style: TextStyle(
+            color: Colors.green,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
   }
 }
 
