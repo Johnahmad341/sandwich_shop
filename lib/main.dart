@@ -56,13 +56,13 @@ class _orderScreenState extends State<OrderScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    print('Add button pressed!');
+                    _increaseQuantity();
                   },
                   child: const Text('Add'),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    print('Remove button is pressed!');
+                    _decreaseQuantity();
                   },
                   child: const Text('Remove'),
                 ),
