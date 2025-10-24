@@ -72,23 +72,87 @@ class _orderScreenState extends State<OrderScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () {
+                // ElevatedButton(
+                //   onPressed: () {
+                //     _increaseQuantity();
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.greenAccent,
+                //     foregroundColor: Colors.black,
+                //     textStyle: TextStyle(fontWeight: FontWeight.bold),
+                //   ),
+                //   child: const Text('Add'),
+                // ),
+                StyleButton(
+                  'add_button',
+                  Colors.black,
+                  Colors.greenAccent,
+                  FontWeight.bold,
+                  () {
                     _increaseQuantity();
                   },
-                  child: const Text('Add'),
+                  'Add',
                 ),
-                ElevatedButton(
-                  onPressed: () {
+
+                StyleButton(
+                  'remove_button',
+                  Colors.black,
+                  Colors.redAccent,
+                  FontWeight.bold,
+                  () {
                     _decreaseQuantity();
                   },
-                  child: const Text('Remove'),
+                  'Remove',
                 ),
+
+                // ElevatedButton(
+                //   onPressed: () {
+                //     _decreaseQuantity();
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.redAccent,
+                //     foregroundColor: Colors.black,
+                //     textStyle: TextStyle(fontWeight: FontWeight.bold),
+                //   ),
+                //   child: const Text('Remove'),
+                // ),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class StyleButton extends StatelessWidget {
+  final String button_name;
+  final Color foreground_color;
+  final Color background_color;
+  final FontWeight font_weight;
+  final VoidCallback onPressed;
+  final String text;
+
+  const StyleButton(
+    this.button_name,
+    this.foreground_color,
+    this.background_color,
+    this.font_weight,
+    this.onPressed,
+    this.text, {
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: this.onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: this.background_color,
+        foregroundColor: this.foreground_color,
+        textStyle: TextStyle(fontWeight: this.font_weight),
+      ),
+      child: Text(this.text),
     );
   }
 }
