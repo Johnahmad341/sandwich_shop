@@ -88,9 +88,7 @@ class _orderScreenState extends State<OrderScreen> {
                   Colors.black,
                   Colors.greenAccent,
                   FontWeight.bold,
-                  () {
-                    _increaseQuantity();
-                  },
+                  _quantity >= widget.maxQuantity ? null : _increaseQuantity, // _increaseQuantity,
                   'Add',
                 ),
 
@@ -101,9 +99,7 @@ class _orderScreenState extends State<OrderScreen> {
                   Colors.black,
                   Colors.redAccent,
                   FontWeight.bold,
-                  () {
-                    _decreaseQuantity();
-                  },
+                  _quantity <= 0 ? null : _decreaseQuantity,  // _decreaseQuantity,
                   'Remove',
                 ),
 
@@ -132,7 +128,7 @@ class StyleButton extends StatelessWidget {
   final Color foreground_color;
   final Color background_color;
   final FontWeight font_weight;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String text;
 
   const StyleButton(
