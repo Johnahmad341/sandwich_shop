@@ -29,18 +29,45 @@ class OrderScreen extends StatefulWidget {
 
 class _orderScreenState extends State<OrderScreen> {
   int _quantity = 0;
+  List<int> quantities = [0, 0];
   String _orderNote = '';
+  sandwich_types _selectedType = sandwich_types.footlong;
 
-  void _increaseQuantity() {
-    if (_quantity < widget.maxQuantity) {
-      setState(() => _quantity++);
+  void _increaseQuantity(position) {
+    if ((quantities[0] + quantities[1]) < widget.maxQuantity) {
+      setState(() {
+        quantities[position]++;
+        _quantity++;
+      });
     }
   }
 
-  void _decreaseQuantity() {
-    if (_quantity > 0) {
-      setState(() => _quantity--);
+  void _decreaseQuantity(position) {
+    if (quantities[position] > 0) {
+      setState(() {
+        quantities[position]--;
+        _quantity--;
+      });
     }
+  }
+
+  String _getSandwichName(sandwich_types type) {
+    switch (type) {
+      case sandwich_types.footlong:
+        return 'Footlong';
+      case sandwich_types.sixInch:
+        return 'Six-Inch';
+    }
+  }
+
+  int _getposition_sandwich(sandwich_types type) {
+    switch (type) {
+      case sandwich_types.footlong:
+        return 0;
+      case sandwich_types.sixInch:
+        return 1;
+    }
+    throw ArgumentError('Invalid sandwich type');
   }
 
   @override
@@ -51,8 +78,8 @@ class _orderScreenState extends State<OrderScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            OrderItemDisplay(_quantity, 'Footlong'),
-
+            OrderItemDisplay(quantities[0], 'Footlong'),
+            OrderItemDisplay(quantities[1], 'Six-Inch'),
             SizedBox(
               width: 300,
               height: 40,
@@ -68,6 +95,8 @@ class _orderScreenState extends State<OrderScreen> {
                 },
               ),
             ),
+
+            SizedBox(height: 20),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -88,7 +117,12 @@ class _orderScreenState extends State<OrderScreen> {
                   Colors.black,
                   Colors.greenAccent,
                   FontWeight.bold,
-                  _quantity >= widget.maxQuantity ? null : _increaseQuantity, // _increaseQuantity,
+                  _quantity >= widget.maxQuantity
+                      ? null
+                      : ()  {
+                        _increaseQuantity(_getposition_sandwich(_selectedType));
+                        },
+                       // _increaseQuantity,
                   'Add',
                 ),
 
@@ -99,7 +133,11 @@ class _orderScreenState extends State<OrderScreen> {
                   Colors.black,
                   Colors.redAccent,
                   FontWeight.bold,
-                  _quantity <= 0 ? null : _decreaseQuantity,  // _decreaseQuantity,
+                  _quantity <= 0
+                      ? null
+                      : () {
+                          _decreaseQuantity(_getposition_sandwich(_selectedType));
+                        },
                   'Remove',
                 ),
 
@@ -116,12 +154,35 @@ class _orderScreenState extends State<OrderScreen> {
                 // ),
               ],
             ),
+
+            SizedBox(height: 20),
+
+            SegmentedButton<sandwich_types>(
+              segments: const <ButtonSegment<sandwich_types>>[
+                ButtonSegment<sandwich_types>(
+                  value: sandwich_types.footlong,
+                  label: Text('Footlong'),
+                ),
+                ButtonSegment<sandwich_types>(
+                  value: sandwich_types.sixInch,
+                  label: Text('Six-Inch'),
+                ),
+              ],
+              selected: {_selectedType},
+              onSelectionChanged: (Set<sandwich_types> newSelection) {
+                setState(() {
+                  _selectedType = newSelection.first;
+                });
+              },
+            ),
           ],
         ),
       ),
     );
   }
 }
+
+enum sandwich_types { footlong, sixInch }
 
 class StyleButton extends StatelessWidget {
   final String button_name;
