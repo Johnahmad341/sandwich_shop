@@ -94,6 +94,8 @@ class _orderScreenState extends State<OrderScreen> {
                   'Add',
                 ),
 
+                SizedBox(width: 20),
+
                 StyleButton(
                   'remove_button',
                   Colors.black,
