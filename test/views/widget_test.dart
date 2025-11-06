@@ -110,6 +110,56 @@ void main() {
     });
   });
 
+  group('SwitchButton', () {
+    testWidgets('Test the switch widget for the different sandwiches', (
+      WidgetTester tester,
+    ) async {
+      bool switchValue = false;
+
+      MaterialApp testApp = MaterialApp(
+        home: Scaffold(
+          body: StatefulBuilder(
+            builder: (context, setState) {
+              return Switch(
+                value: switchValue,
+                onChanged: (newValue) {
+                  setState(() {
+                    switchValue = newValue;
+                  });
+                },
+              );
+              ;
+            },
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(testApp);
+      //Checks if a switch actually exists in the testApp
+      expect(find.byType(Switch), findsOneWidget);
+
+      //Checks if the initial value for the switch is off
+      Switch sw = tester.widget<Switch>(find.byType(Switch));
+      expect(sw.value, false);
+
+      //Checks if the switch it 'tappable'
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+
+      //Checks if the value of the switch is now on
+      sw = tester.widget<Switch>(find.byType(Switch));
+      expect(sw.value, true);
+
+      //Checks if the switch can be tapped again to turn off
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+
+      //Checks if the value has been changed accordingly back to off
+      sw = tester.widget<Switch>(find.byType(Switch));
+      expect(sw.value, false);
+    });
+  });
+
   group('OrderItemDisplay', () {
     testWidgets('shows correct text and note for zero sandwiches', (
       WidgetTester tester,
