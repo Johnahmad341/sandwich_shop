@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sandwich_shop/repositories/pricing_repository.dart';
 import 'package:sandwich_shop/views/app_styles.dart';
 import 'package:sandwich_shop/repositories/order_repository.dart';
 
@@ -231,10 +232,15 @@ class OrderItemDisplay extends StatelessWidget {
     required this.isToasted
   });
 
+  PricingRepository get pricingRepository {
+    return PricingRepository(quantity, itemType);
+  }
+
   @override
   Widget build(BuildContext context) {
     String displayText =
-        '$quantity ${isToasted ? "Toasted" : "UnToasted"} ${breadType.name} $itemType sandwich(es): ${'🥪' * quantity}';
+        '$quantity ${isToasted ? "Toasted" : "UnToasted"} ${breadType.name} $itemType sandwich(es): ${'🥪' * quantity}\n'
+        + 'this costs £${pricingRepository.calculate_totalSandwich()}';
 
     return Column(
       children: [
