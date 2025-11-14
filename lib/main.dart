@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sandwich_shop/repositories/pricing_repository.dart';
+import 'package:sandwich_shop/services/file_service.dart';
 import 'package:sandwich_shop/views/app_styles.dart';
 import 'package:sandwich_shop/repositories/order_repository.dart';
 
@@ -34,6 +35,7 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   late final OrderRepository _orderRepository;
+  late final FileService _fileService;
   final TextEditingController _notesController = TextEditingController();
   bool _isFootlong = true;
   BreadType _selectedBreadType = BreadType.white;
@@ -179,6 +181,17 @@ class _OrderScreenState extends State<OrderScreen> {
                 const Text('toasted', style: normalText),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                StyledButton(
+                  onPressed: () => _fileService.writeNomSandwich("${_orderRepository.quantity} $sandwichType"),
+                  icon: Icons.save,
+                  label: 'Save',
+                  backgroundColor: Colors.blue,
+                  )
+              ],
+            )
           ],
         ),
       ),
@@ -251,3 +264,4 @@ class OrderItemDisplay extends StatelessWidget {
     );
   }
 }
+

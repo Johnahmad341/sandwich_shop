@@ -1,0 +1,19 @@
+import 'package:sandwich_shop/services/file_service.dart';
+
+class OrderViewModel {
+  final FileService fileService = FileService();
+
+  Future<void> saveOrderToFile({
+    required int quantity,
+    required bool isFootlong,
+  }) async {
+    String sandwichType = '';
+    if (isFootlong) {
+      sandwichType = 'footlong';
+    } else {
+      sandwichType = 'six-inch';
+    }
+    final String orderDetails = '$quantity $sandwichType sandwich(es)';
+    await fileService.writeOrder(orderDetails); // This should be a method in FileService
+  }
+}
