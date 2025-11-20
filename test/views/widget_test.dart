@@ -12,23 +12,26 @@ void main() {
   });
 
   group('OrderScreen - Quantity', () {
-    testWidgets('shows initial quantity and title',
-        (WidgetTester tester) async {
+    testWidgets('shows initial quantity and title', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(const App());
       expect(find.text('0 white footlong sandwich(es): '), findsOneWidget);
       expect(find.text('Sandwich Counter'), findsOneWidget);
     });
 
-    testWidgets('increments quantity when Add is tapped',
-        (WidgetTester tester) async {
+    testWidgets('increments quantity when Add is tapped', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(const App());
       await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
       await tester.pump();
       expect(find.text('1 white footlong sandwich(es): 🥪'), findsOneWidget);
     });
 
-    testWidgets('decrements quantity when Remove is tapped',
-        (WidgetTester tester) async {
+    testWidgets('decrements quantity when Remove is tapped', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(const App());
       await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
       await tester.pump();
@@ -46,29 +49,34 @@ void main() {
       expect(find.text('0 white footlong sandwich(es): '), findsOneWidget);
     });
 
-    testWidgets('does not increment above maxQuantity',
-        (WidgetTester tester) async {
+    testWidgets('does not increment above maxQuantity', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(const App());
       for (int i = 0; i < 10; i++) {
         await tester.tap(find.widgetWithText(ElevatedButton, 'Add'));
         await tester.pump();
       }
-      expect(find.text('5 white footlong sandwich(es): 🥪🥪🥪🥪🥪'),
-          findsOneWidget);
+      expect(
+        find.text('5 white footlong sandwich(es): 🥪🥪🥪🥪🥪'),
+        findsOneWidget,
+      );
     });
   });
 
   group('OrderScreen - Controls', () {
-    testWidgets('toggles sandwich type with Switch',
-        (WidgetTester tester) async {
+    testWidgets('toggles sandwich type with Switch', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(const App());
       expect(find.textContaining('footlong sandwich'), findsOneWidget);
       await tester.tap(find.byType(Switch));
       await tester.pump();
       expect(find.textContaining('six-inch sandwich'), findsOneWidget);
     });
-    testWidgets('changes bread type with DropdownMenu',
-        (WidgetTester tester) async {
+    testWidgets('changes bread type with DropdownMenu', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(const App());
       await tester.tap(find.byType(DropdownMenu<BreadType>));
       await tester.pumpAndSettle();
@@ -80,13 +88,17 @@ void main() {
       await tester.tap(find.text('wholemeal').last);
       await tester.pumpAndSettle();
       expect(
-          find.textContaining('wholemeal footlong sandwich'), findsOneWidget);
+        find.textContaining('wholemeal footlong sandwich'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('updates note with TextField', (WidgetTester tester) async {
       await tester.pumpWidget(const App());
       await tester.enterText(
-          find.byKey(const Key('notes_textfield')), 'Extra mayo');
+        find.byKey(const Key('notes_textfield')),
+        'Extra mayo',
+      );
       await tester.pump();
       expect(find.text('Note: Extra mayo'), findsOneWidget);
     });
@@ -100,9 +112,7 @@ void main() {
         label: 'Test Add',
         backgroundColor: Colors.blue,
       );
-      const testApp = MaterialApp(
-        home: Scaffold(body: testButton),
-      );
+      const testApp = MaterialApp(home: Scaffold(body: testButton));
       await tester.pumpWidget(testApp);
       expect(find.byIcon(Icons.add), findsOneWidget);
       expect(find.text('Test Add'), findsOneWidget);
@@ -110,71 +120,45 @@ void main() {
     });
   });
 
-  group('OrderItemDisplay', () {
-    testWidgets('shows correct text and note for zero sandwiches',
-        (WidgetTester tester) async {
-      const widgetToBeTested = OrderItemDisplay(
-        quantity: 0,
-        itemType: 'footlong',
-        breadType: BreadType.white,
-        orderNote: 'No notes added.',
-      );
-      const testApp = MaterialApp(
-        home: Scaffold(body: widgetToBeTested),
-      );
-      await tester.pumpWidget(testApp);
-      expect(find.text('0 white footlong sandwich(es): '), findsOneWidget);
-      expect(find.text('Note: No notes added.'), findsOneWidget);
-    });
+  group('sandwiches updating', () {
+    testWidgets('testing if images changes when bread type is selected', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(const App());
 
-    testWidgets('shows correct text and emoji for three sandwiches',
-        (WidgetTester tester) async {
-      const widgetToBeTested = OrderItemDisplay(
-        quantity: 3,
-        itemType: 'footlong',
-        breadType: BreadType.white,
-        orderNote: 'No notes added.',
-      );
-      const testApp = MaterialApp(
-        home: Scaffold(body: widgetToBeTested),
-      );
-      await tester.pumpWidget(testApp);
+      //Check what the inital image is when starting the app
+      final initalImage = tester.widget<Image>(find.byType(Image));
+      final initialAssetImage = initalImage.image as AssetImage;
       expect(
-          find.text('3 white footlong sandwich(es): 🥪🥪🥪'), findsOneWidget);
-      expect(find.text('Note: No notes added.'), findsOneWidget);
-    });
+        initialAssetImage.assetName,
+        'assets/images/Veggie Delight_footlong.jpg',
+      );
 
-    testWidgets('shows correct bread and type for two six-inch wheat',
-        (WidgetTester tester) async {
-      const widgetToBeTested = OrderItemDisplay(
-        quantity: 2,
-        itemType: 'six-inch',
-        breadType: BreadType.wheat,
-        orderNote: 'No pickles',
-      );
-      const testApp = MaterialApp(
-        home: Scaffold(body: widgetToBeTested),
-      );
-      await tester.pumpWidget(testApp);
-      expect(find.text('2 wheat six-inch sandwich(es): 🥪🥪'), findsOneWidget);
-      expect(find.text('Note: No pickles'), findsOneWidget);
-    });
+      //Selecting a different type of sandwich via the drop-down menu
+      await tester.tap(find.byType(DropdownMenu<SandwichType>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Chicken Teriyaki').last);
+      await tester.pumpAndSettle();
 
-    testWidgets('shows correct bread and type for one wholemeal footlong',
-        (WidgetTester tester) async {
-      const widgetToBeTested = OrderItemDisplay(
-        quantity: 1,
-        itemType: 'footlong',
-        breadType: BreadType.wholemeal,
-        orderNote: 'Lots of lettuce',
-      );
-      const testApp = MaterialApp(
-        home: Scaffold(body: widgetToBeTested),
-      );
-      await tester.pumpWidget(testApp);
+      //Check if the image has changed accordingly
+      final secondImage = tester.widget<Image>(find.byType(Image));
+      final secondAssetImage = secondImage.image as AssetImage;
       expect(
-          find.text('1 wholemeal footlong sandwich(es): 🥪'), findsOneWidget);
-      expect(find.text('Note: Lots of lettuce'), findsOneWidget);
+        secondAssetImage.assetName,
+        'assets/images/Chicken Teriyaki_footlong.jpg',
+      );
+
+      //Check if the switch works, changing sandwich type to six inch
+      await tester.tap(find.byType(Switch));
+      await tester.pumpAndSettle();
+
+      //Verfies that the image has changed accordingly to a Chicken Teritaki six-inch
+      final thirdImage = tester.widget<Image>(find.byType(Image));
+      final thirdAssetImage = thirdImage.image as AssetImage;
+      expect(
+        thirdAssetImage.assetName,
+        'assets/images/Chicken Teriyaki_six_inch.jpg',
+      );
     });
   });
 }

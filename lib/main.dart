@@ -62,7 +62,7 @@ class _OrderScreenState extends State<OrderScreen> {
       );
 
       setState(() {
-        _cart.addToCart(sandwich, quantity: _quantity);
+        _cart.add(sandwich, quantity: _quantity);
       });
 
       String sizeText;
@@ -255,20 +255,6 @@ class _OrderScreenState extends State<OrderScreen> {
 }
 
 
-  // List<DropdownMenuEntry<BreadType>> _buildDropdownEntries() {
-  //   List<DropdownMenuEntry<BreadType>> entries = [];
-  //   for (BreadType bread in BreadType.values) {
-  //     DropdownMenuEntry<BreadType> newEntry = DropdownMenuEntry<BreadType>(
-  //       value: bread,
-  //       label: bread.name,
-  //     );
-  //     entries.add(newEntry);
-  //   }
-  //   return entries;
-  // }
-
-
-
 class StyledButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final IconData icon;
@@ -305,35 +291,3 @@ class StyledButton extends StatelessWidget {
   }
 }
 
-class OrderItemDisplay extends StatelessWidget {
-  final int quantity;
-  final String itemType;
-  final BreadType breadType;
-  final String orderNote;
-
-  const OrderItemDisplay({
-    super.key,
-    required this.quantity,
-    required this.itemType,
-    required this.breadType,
-    required this.orderNote,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    String emojis = '🥪' * quantity;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '$quantity ${breadType.name} $itemType sandwich(es): $emojis',
-          style: normalText,
-        ),
-        Text(
-          'Note: $orderNote',
-          style: normalText,
-        ),
-      ],
-    );
-  }
-}
