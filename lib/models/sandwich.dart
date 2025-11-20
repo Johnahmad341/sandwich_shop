@@ -28,7 +28,7 @@ class Sandwich {
   Sandwich({
     this.id = '',
     this.description = '',
-    this.available = true,
+    this.available = true, // Default to true
     required this.type,
     required this.isFootlong,
     required this.breadType,
@@ -36,19 +36,16 @@ class Sandwich {
 
   factory Sandwich.fromJson(Map<String, dynamic> json) {
     final String? jsonId = json['id'] as String?;
-    final String? jsonName = json['name'] as String?;
-    final String normalized =
-        (jsonId ?? jsonName ?? '').toLowerCase().replaceAll('_', ' ').trim();
 
-    SandwichType mapType(String norm) {
-      switch (norm) {
+    SandwichType mapType(String id) {
+      switch (id) {
         case 'veggie delight':
           return SandwichType.veggieDelight;
-        case 'chicken teriyaki':
+        case 'chicken_teriyaki':
           return SandwichType.chickenTeriyaki;
-        case 'tuna melt':
+        case 'tuna_melt':
           return SandwichType.tunaMelt;
-        case 'meatball marinara':
+        case 'meatball_marinara':
           return SandwichType.meatballMarinara;
         default:
           return SandwichType.veggieDelight;
@@ -59,7 +56,7 @@ class Sandwich {
       id: jsonId ?? '',
       description: json['description'] as String? ?? '',
       available: json['available'] as bool? ?? true,
-      type: mapType(normalized),
+      type: mapType(jsonId ?? ''),
       isFootlong: true,
       breadType: BreadType.white,
     );

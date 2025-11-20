@@ -22,7 +22,7 @@
             "id": "meatball_marinara",
             "name": "Meatball Marinara",
             "description": "Italian meatballs in marinara sauce",
-            "available": true
+            "available": false
         }
     ]
 }

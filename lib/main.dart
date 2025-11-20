@@ -39,18 +39,33 @@ class _OrderScreenState extends State<OrderScreen> {
   BreadType _selectedBreadType = BreadType.white;
   int _quantity = 1;
 
+  // Add this: store loaded sandwich data
+  Map<SandwichType, Sandwich> _sandwichData = {};
+  bool _isLoadingSandwiches = true;
+
   @override
   void initState() {
     super.initState();
+    _loadSandwiches(); // Load JSON data on startup
     _notesController.addListener(() {
       setState(() {});
     });
   }
 
-  @override
-  void dispose() {
-    _notesController.dispose();
-    super.dispose();
+  // Add this method to load sandwiches from JSON
+  Future<void> _loadSandwiches() async {
+    final data = await loadSandwichData();
+    Map<SandwichType, Sandwich> sandwiches = {};
+    
+    for (var json in data) {
+      final sandwich = Sandwich.fromJson(json);
+      sandwiches[sandwich.type] = sandwich;
+    }
+    
+    setState(() {
+      _sandwichData = sandwiches;
+      _isLoadingSandwiches = false;
+    });
   }
 
   void _addToCart() {
@@ -85,14 +100,25 @@ class _OrderScreenState extends State<OrderScreen> {
     return null;
   }
 
+  // Update this method to use loaded data
   List<DropdownMenuEntry<SandwichType>> _buildSandwichTypeEntries() {
+    // If data not loaded yet, return empty list
+    if (_sandwichData.isEmpty) {
+      return [];
+    }
+
     List<DropdownMenuEntry<SandwichType>> entries = [];
     for (SandwichType type in SandwichType.values) {
-      Sandwich sandwich =
-          Sandwich(type: type, isFootlong: true, breadType: BreadType.white);
+      // Use the loaded sandwich data instead of creating a new one
+      Sandwich sandwich = _sandwichData[type]!;
+      
       DropdownMenuEntry<SandwichType> entry = DropdownMenuEntry<SandwichType>(
         value: type,
         label: sandwich.name,
+        leadingIcon: sandwich.available
+          ? const Icon(Icons.check_circle, color: Colors.green, size: 15)
+          : const Icon(Icons.cancel, color: Colors.red, size: 15),
+        enabled: sandwich.available, // Now this actually uses JSON data!
       );
       entries.add(entry);
     }
@@ -172,84 +198,104 @@ class _OrderScreenState extends State<OrderScreen> {
           style: heading1,
         ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                height: 300,
-                child: Image.asset(
-                  _getCurrentImagePath(),
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(
-                      child: Text(
-                        'Image not found',
-                        style: normalText,
+      body: _isLoadingSandwiches
+          ? const Center(child: CircularProgressIndicator())
+          : Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(
+                      height: 300,
+                      child: Image.asset(
+                        _getCurrentImagePath(),
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                            child: Text(
+                              'Image not found',
+                              style: normalText,
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
+                    ),
+                    const SizedBox(height: 20),
+                    
+                    // Optional: Show sandwich description
+                    if (_sandwichData[_selectedSandwichType] != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Text(
+                              _sandwichData[_selectedSandwichType]!.description,
+                              style: normalText,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    
+                    const SizedBox(height: 20),
+                    DropdownMenu<SandwichType>(
+                      width: double.infinity,
+                      label: const Text('Sandwich Type'),
+                      textStyle: normalText,
+                      initialSelection: _selectedSandwichType,
+                      onSelected: _onSandwichTypeChanged,
+                      dropdownMenuEntries: _buildSandwichTypeEntries(),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Six-inch', style: normalText),
+                        Switch(
+                          value: _isFootlong,
+                          onChanged: _onSizeChanged,
+                        ),
+                        const Text('Footlong', style: normalText),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    DropdownMenu<BreadType>(
+                      width: double.infinity,
+                      label: const Text('Bread Type'),
+                      textStyle: normalText,
+                      initialSelection: _selectedBreadType,
+                      onSelected: _onBreadTypeChanged,
+                      dropdownMenuEntries: _buildBreadTypeEntries(),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Quantity: ', style: normalText),
+                        IconButton(
+                          onPressed: _getDecreaseCallback(),
+                          icon: const Icon(Icons.remove),
+                        ),
+                        Text('$_quantity', style: heading2),
+                        IconButton(
+                          onPressed: _increaseQuantity,
+                          icon: const Icon(Icons.add),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    StyledButton(
+                      onPressed: _getAddToCartCallback(),
+                      icon: Icons.add_shopping_cart,
+                      label: 'Add to Cart',
+                      backgroundColor: Colors.green,
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                 ),
               ),
-              const SizedBox(height: 20),
-              DropdownMenu<SandwichType>(
-                width: double.infinity,
-                label: const Text('Sandwich Type'),
-                textStyle: normalText,
-                initialSelection: _selectedSandwichType,
-                onSelected: _onSandwichTypeChanged,
-                dropdownMenuEntries: _buildSandwichTypeEntries(),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Six-inch', style: normalText),
-                  Switch(
-                    value: _isFootlong,
-                    onChanged: _onSizeChanged,
-                  ),
-                  const Text('Footlong', style: normalText),
-                ],
-              ),
-              const SizedBox(height: 20),
-              DropdownMenu<BreadType>(
-                width: double.infinity,
-                label: const Text('Bread Type'),
-                textStyle: normalText,
-                initialSelection: _selectedBreadType,
-                onSelected: _onBreadTypeChanged,
-                dropdownMenuEntries: _buildBreadTypeEntries(),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Quantity: ', style: normalText),
-                  IconButton(
-                    onPressed: _getDecreaseCallback(),
-                    icon: const Icon(Icons.remove),
-                  ),
-                  Text('$_quantity', style: heading2),
-                  IconButton(
-                    onPressed: _increaseQuantity,
-                    icon: const Icon(Icons.add),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              StyledButton(
-                onPressed: _getAddToCartCallback(),
-                icon: Icons.add_shopping_cart,
-                label: 'Add to Cart',
-                backgroundColor: Colors.green,
-              ),
-              const SizedBox(height: 20),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
