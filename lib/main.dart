@@ -77,7 +77,9 @@ class _OrderScreenState extends State<OrderScreen> {
       );
 
       setState(() {
-        _cart.add(sandwich, quantity: _quantity);
+        _cart.add(sandwich,
+        quantity: _quantity,
+        note: _notesController.text.trim());
       });
 
       String sizeText;
@@ -292,6 +294,7 @@ class _OrderScreenState extends State<OrderScreen> {
                       backgroundColor: Colors.green,
                     ),
                     const SizedBox(height: 20),
+                    _cart.getSummary()
                   ],
                 ),
               ),

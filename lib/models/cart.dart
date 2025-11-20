@@ -1,5 +1,5 @@
 import 'dart:collection';
-
+import 'package:flutter/material.dart';
 import 'package:sandwich_shop/models/sandwich.dart';
 
 /// Represents a single line item in the cart.
@@ -174,5 +174,42 @@ class Cart {
 				i.sandwich.isFootlong == sandwich.isFootlong &&
 				i.sandwich.breadType == sandwich.breadType);
 	}
-}
 
+	Text getSummary() {
+		if (isEmpty) {
+			return const Text(
+				'Your cart is empty',
+				style: TextStyle(
+					fontSize: 16,
+					fontWeight: FontWeight.bold,
+				),
+				textAlign: TextAlign.center,
+			);
+		}
+		String summary = "";
+
+		for (var item in _items) {
+			final size = item.sandwich.isFootlong ? 'Footlong' : 'Six-inch';
+			summary+='${item.sandwich.name} $size\n';
+			summary+= 'Bread: ${item.sandwich.breadType.name}\n';
+
+			if (item.note.isNotEmpty) {
+				summary+= 'Note: ${item.note}\n';
+			}
+
+			summary+= 'Quantity: x${item.quantity}\n';
+		}
+
+		summary+= 'Total item: $totalQuantity';
+
+		return Text(
+			summary,
+			style: TextStyle(
+				fontSize: 16,
+				fontWeight: FontWeight.bold,
+			),
+			textAlign: TextAlign.center,
+		);
+	}
+
+}
