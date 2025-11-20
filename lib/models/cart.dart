@@ -64,7 +64,7 @@ class Cart {
 
 	/// Add [quantity] of [sandwich] with optional [note].
 	/// If an identical line exists (same sandwich config + note), it increments.
-	void add(Sandwich sandwich, {int quantity = 1, String note = ''}) {
+	void addToCart(Sandwich sandwich, {int quantity = 1, String note = ''}) {
 		if (quantity <= 0) {
 			throw ArgumentError('Quantity to add must be greater than 0');
 		}
@@ -74,6 +74,11 @@ class Cart {
 		} else {
 			_items.add(CartItem(sandwich: sandwich, quantity: quantity, note: note));
 		}
+	}
+
+	/// Alias for addToCart - Add [quantity] of [sandwich] with optional [note].
+	void add(Sandwich sandwich, {int quantity = 1, String note = ''}) {
+		addToCart(sandwich, quantity: quantity, note: note);
 	}
 
 	/// Remove a single unit of the matching line. Removes the line if it reaches 0.

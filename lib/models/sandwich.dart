@@ -32,13 +32,10 @@ class Sandwich {
   }
 
   String get image {
-    String typeString = type.name;
-    String sizeString = '';
-    if (isFootlong) {
-      sizeString = 'footlong';
-    } else {
-      sizeString = 'six_inch';
-    }
-    return 'assets/images/${typeString}_$sizeString.png';
+    // Asset filenames in assets/images use display names with spaces
+    // and the .jpg extension, e.g. "Veggie Delight_footlong.jpg".
+    final String typeString = name; // e.g., "Veggie Delight"
+    final String sizeString = isFootlong ? 'footlong' : 'six_inch';
+    return 'assets/images/${typeString}_$sizeString.jpg';
   }
 }
