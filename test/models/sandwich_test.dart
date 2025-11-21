@@ -30,7 +30,7 @@ void main() {
           isFootlong: true,
           breadType: BreadType.wheat,
         );
-        final expected = 'assets/images/${type.name}_footlong.png';
+        final expected = 'assets/images/${type.id}_footlong.jpg';
         expect(sandwich.image, expected,
             reason: 'Image path should include enum name and "footlong" size');
       }
@@ -43,7 +43,7 @@ void main() {
           isFootlong: false,
           breadType: BreadType.wholemeal,
         );
-        final expected = 'assets/images/${type.name}_six_inch.png';
+        final expected = 'assets/images/${type.id}_six_inch.jpg';
         expect(sandwich.image, expected,
             reason: 'Image path should include enum name and "six_inch" size');
       }
@@ -56,8 +56,8 @@ void main() {
       final sixInchWheat = Sandwich(type: type, isFootlong: false, breadType: BreadType.wheat);
 
       expect(footlongWhite.image, footlongWholemeal.image);
-      expect(footlongWhite.image, 'assets/images/${type.name}_footlong.png');
-      expect(sixInchWheat.image, 'assets/images/${type.name}_six_inch.png');
+      expect(footlongWhite.image, 'assets/images/Tuna Melt_footlong.jpg');
+      expect(sixInchWheat.image, 'assets/images/Tuna Melt_six_inch.jpg');
     });
   });
 }

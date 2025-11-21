@@ -2,18 +2,30 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 Future<List<Map<String, dynamic>>> loadSandwichData() async {
-  final String jsonString = await rootBundle.loadString('assets/sandwiches.json');
+  final String jsonString = await rootBundle.loadString(
+    'assets/sandwiches.json',
+  );
   final Map<String, dynamic> jsonData = json.decode(jsonString);
   return List<Map<String, dynamic>>.from(jsonData['sandwiches']);
 }
 
 enum BreadType { white, wheat, wholemeal }
 
-enum SandwichType {
-  veggieDelight,
-  chickenTeriyaki,
-  tunaMelt,
-  meatballMarinara,
+enum SandwichType { veggieDelight, chickenTeriyaki, tunaMelt, meatballMarinara }
+
+extension SandwichTypeExtension on SandwichType {
+  String get id {
+    switch (this) {
+      case SandwichType.veggieDelight:
+        return 'Veggie Delight';
+      case SandwichType.chickenTeriyaki:
+        return 'Chicken Teriyaki';
+      case SandwichType.tunaMelt:
+        return 'Tuna Melt';
+      case SandwichType.meatballMarinara:
+        return 'Meatball Marinara';
+    }
+  }
 }
 
 class Sandwich {

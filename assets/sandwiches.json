@@ -1,7 +1,7 @@
 {
     "sandwiches": [
         {
-            "id": "veggie delight",
+            "id": "veggie_delight",
             "name": "Veggie Delight",
             "description": "Fresh vegetables with your choice of bread",
             "available": true
