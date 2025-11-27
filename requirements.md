@@ -119,3 +119,27 @@ class Sandwich {
     String? notes,
   });
 }
+```
+
+---
+
+## 4. Newly Added Features
+
+### 4.1 Profile Screen
+
+- Add a new Profile screen where users can enter and view their details (name and email).
+- No authentication or data persistence is required for now.
+- Add a button at the bottom of the order screen to navigate to the Profile screen.
+- The Profile screen should allow users to enter their name and email, and save (show a confirmation message).
+- Write widget tests for the Profile screen to verify UI elements and save functionality.
+
+### 4.2 Checkout Screen
+
+- Added a checkout screen that displays an order summary, total price, and simulates payment processing.
+- After payment, shows an order confirmation message and estimated time.
+- Clears the cart and returns to the order screen after successful checkout.
+
+### 4.3 About Screen
+
+- Added an About screen with information about the Sandwich Shop.
+- Accessible from the app for users to learn more about the business.
