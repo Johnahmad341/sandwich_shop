@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sandwich_shop/views/order_screen.dart';
 import 'package:sandwich_shop/views/about_screen.dart';
+import 'package:sandwich_shop/views/profile_screen.dart';
 
 void main() {
   runApp(const App());
@@ -16,6 +17,7 @@ class App extends StatelessWidget {
       home: const OrderScreen(maxQuantity: 5),
       routes: {
         '/about': (context) => const AboutScreen(),
+        '/profile': (context) => const ProfileScreen(),
       },
     );
   }
