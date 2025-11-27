@@ -40,10 +40,15 @@ class _OrderScreenState extends State<OrderScreen> {
 
   void _addToCart() {
     if (_quantity > 0) {
+      final String? notes = _notesController.text.trim().isEmpty
+          ? null
+          : _notesController.text.trim();
+
       final Sandwich sandwich = Sandwich(
         type: _selectedSandwichType,
         isFootlong: _isFootlong,
         breadType: _selectedBreadType,
+        notes: notes,
       );
 
       setState(() {
@@ -59,12 +64,19 @@ class _OrderScreenState extends State<OrderScreen> {
       String confirmationMessage =
           'Added $_quantity $sizeText ${sandwich.name} sandwich(es) on ${_selectedBreadType.name} bread to cart';
 
+      if (notes != null) {
+        confirmationMessage += ' (with notes)';
+      }
+
       ScaffoldMessengerState scaffoldMessenger = ScaffoldMessenger.of(context);
       SnackBar snackBar = SnackBar(
         content: Text(confirmationMessage),
         duration: const Duration(seconds: 2),
       );
       scaffoldMessenger.showSnackBar(snackBar);
+
+      // Clear notes field after adding to cart
+      _notesController.clear();
     }
   }
 
@@ -192,6 +204,21 @@ class _OrderScreenState extends State<OrderScreen> {
                   }
                 },
                 dropdownMenuEntries: _buildBreadTypeEntries(),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextField(
+                  controller: _notesController,
+                  maxLength: 200,
+                  maxLines: 2,
+                  decoration: const InputDecoration(
+                    labelText: 'Special Instructions (optional)',
+                    hintText: 'e.g., extra mayo, no tomatoes',
+                    border: OutlineInputBorder(),
+                    counterText: '',
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               Row(
