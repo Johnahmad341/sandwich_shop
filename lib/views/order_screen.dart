@@ -96,6 +96,10 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 
+  void _navigateToProfileScreen() {
+    Navigator.pushNamed(context, '/profile');
+  }
+
   List<DropdownMenuEntry<SandwichType>> _buildSandwichTypeEntries() {
     List<DropdownMenuEntry<SandwichType>> entries = [];
     for (SandwichType type in SandwichType.values) {
@@ -257,6 +261,13 @@ class _OrderScreenState extends State<OrderScreen> {
                 'Cart: ${_cart.countOfItems} items - £${_cart.totalPrice.toStringAsFixed(2)}',
                 style: normalText,
                 textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              StyledButton(
+                onPressed: _navigateToProfileScreen,
+                icon: Icons.person,
+                label: 'Profile',
+                backgroundColor: Colors.purple,
               ),
               const SizedBox(height: 20),
             ],
