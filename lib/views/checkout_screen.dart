@@ -3,6 +3,7 @@ import 'package:sandwich_shop/views/app_styles.dart';
 import 'package:sandwich_shop/models/cart.dart';
 import 'package:sandwich_shop/models/sandwich.dart';
 import 'package:sandwich_shop/repositories/pricing_repository.dart';
+import 'package:sandwich_shop/views/nav_drawer.dart';
 
 class CheckoutScreen extends StatefulWidget {
   final Cart cart;
@@ -50,6 +51,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isWideScreen = MediaQuery.of(context).size.width > 600;
+    final Widget drawer = NavDrawer(parentContext: context);
+
     List<Widget> columnChildren = [];
 
     columnChildren.add(const Text('Order Summary', style: heading2));
@@ -128,13 +132,27 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: isWideScreen ? null : Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
         title: const Text('Checkout', style: heading1),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: columnChildren,
-        ),
+      drawer: isWideScreen ? null : drawer,
+      body: Row(
+        children: [
+          if (isWideScreen) SizedBox(width: 220, child: drawer),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                children: columnChildren,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
