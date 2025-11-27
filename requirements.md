@@ -143,3 +143,29 @@ class Sandwich {
 
 - Added an About screen with information about the Sandwich Shop.
 - Accessible from the app for users to learn more about the business.
+
+---
+
+## 5. Navigation Drawer & Responsive Navigation
+
+### 5.1 Drawer Navigation Feature
+
+- Add a Drawer widget to all main screens for consistent navigation.
+- Drawer should provide links to: Order, Cart, Profile, Checkout, and About screens.
+- Drawer should be accessible via the AppBar menu icon.
+- Navigation should be responsive:  
+  - On wide screens (tablet/desktop), show navigation as a side panel or persistent menu.  
+  - On narrow screens (mobile), use Drawer that slides in.
+- Reduce code duplication by creating a reusable Drawer widget or navigation wrapper.
+- Ensure navigation state is preserved when switching screens.
+
+### 5.2 Widget Tests
+
+- Add widget tests to verify Drawer navigation works on all screens.
+- Tests should check that tapping Drawer items navigates to the correct screen.
+- Tests should cover responsive navigation (different layouts for different screen widths).
+
+### 5.3 Documentation
+
+- Update requirements.md to include Drawer navigation and responsive navigation requirements.
+- Document any reusable navigation components created.
