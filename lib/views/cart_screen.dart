@@ -5,6 +5,7 @@ import 'package:sandwich_shop/models/cart.dart';
 import 'package:sandwich_shop/models/sandwich.dart';
 import 'package:sandwich_shop/widgets/cart_item_widget.dart';
 import 'package:sandwich_shop/views/checkout_screen.dart';
+import 'package:sandwich_shop/views/nav_drawer.dart';
 
 class CartScreen extends StatefulWidget {
   final Cart cart;
@@ -81,13 +82,15 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isWideScreen = MediaQuery.of(context).size.width > 600;
+    final Widget drawer = NavDrawer(parentContext: context);
+
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            height: 100,
-            child: Image.asset('assets/images/logo.png'),
+        leading: isWideScreen ? null : Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
         title: const Text(
@@ -97,15 +100,20 @@ class _CartScreenState extends State<CartScreen> {
         actions: widget.cart.isEmpty
             ? null
             : [
-                IconButton(
-                  icon: const Icon(Icons.delete_sweep),
-                  onPressed: _showClearCartConfirmation,
-                  tooltip: 'Clear cart',
-                ),
-              ],
+          IconButton(
+            icon: const Icon(Icons.delete_sweep),
+            onPressed: _showClearCartConfirmation,
+            tooltip: 'Clear cart',
+          ),
+        ],
       ),
-      body: widget.cart.isEmpty
-          ? Center(
+      drawer: isWideScreen ? null : drawer,
+      body: Row(
+        children: [
+          if (isWideScreen) SizedBox(width: 220, child: drawer),
+          Expanded(
+            child: widget.cart.isEmpty
+                ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -134,14 +142,14 @@ class _CartScreenState extends State<CartScreen> {
                 ],
               ),
             )
-          : Column(
+                : Column(
               children: [
                 Expanded(
                   child: ListView(
                     children: [
                       const SizedBox(height: 8),
                       for (MapEntry<Sandwich, int> entry
-                          in widget.cart.items.entries)
+                      in widget.cart.items.entries)
                         CartItemWidget(
                           sandwich: entry.key,
                           quantity: entry.value,
@@ -180,7 +188,7 @@ class _CartScreenState extends State<CartScreen> {
                       Builder(
                         builder: (BuildContext context) {
                           final bool cartHasItems =
-                              widget.cart.items.isNotEmpty;
+                          widget.cart.items.isNotEmpty;
                           if (cartHasItems) {
                             return StyledButton(
                               onPressed: _navigateToCheckout,
@@ -205,6 +213,9 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -237,7 +248,7 @@ class _CartScreenState extends State<CartScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content:
-              Text('Order $orderId confirmed! Estimated time: $estimatedTime'),
+          Text('Order $orderId confirmed! Estimated time: $estimatedTime'),
           duration: const Duration(seconds: 4),
           backgroundColor: Colors.green,
         ),
