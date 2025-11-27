@@ -11,11 +11,13 @@ class Sandwich {
   final SandwichType type;
   final bool isFootlong;
   final BreadType breadType;
+  final String? notes;
 
   Sandwich({
     required this.type,
     required this.isFootlong,
     required this.breadType,
+    this.notes,
   });
 
   String get name {
@@ -40,5 +42,40 @@ class Sandwich {
       sizeString = 'six_inch';
     }
     return 'assets/images/${typeString}_$sizeString.png';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    
+    return other is Sandwich &&
+        other.type == type &&
+        other.isFootlong == isFootlong &&
+        other.breadType == breadType &&
+        other.notes == notes;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      type,
+      isFootlong,
+      breadType,
+      notes,
+    );
+  }
+
+  Sandwich copyWith({
+    SandwichType? type,
+    bool? isFootlong,
+    BreadType? breadType,
+    String? notes,
+  }) {
+    return Sandwich(
+      type: type ?? this.type,
+      isFootlong: isFootlong ?? this.isFootlong,
+      breadType: breadType ?? this.breadType,
+      notes: notes ?? this.notes,
+    );
   }
 }
