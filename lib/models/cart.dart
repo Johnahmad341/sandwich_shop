@@ -63,4 +63,28 @@ class Cart {
     }
     return 0;
   }
+
+  // Set exact quantity for an item (removes if quantity is 0)
+  void setQuantity(Sandwich sandwich, int quantity) {
+    if (quantity <= 0) {
+      _items.remove(sandwich);
+    } else {
+      _items[sandwich] = quantity;
+    }
+  }
+
+  // Remove an item completely regardless of quantity
+  void removeItem(Sandwich sandwich) {
+    _items.remove(sandwich);
+  }
+
+  // Update an item (e.g., when size, bread, or notes change)
+  // Preserves the quantity from the old item
+  void updateItem(Sandwich oldSandwich, Sandwich newSandwich) {
+    if (_items.containsKey(oldSandwich)) {
+      final quantity = _items[oldSandwich]!;
+      _items.remove(oldSandwich);
+      _items[newSandwich] = quantity;
+    }
+  }
 }
