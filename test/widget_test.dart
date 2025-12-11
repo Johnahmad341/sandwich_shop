@@ -1,30 +1,76 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:provider/provider.dart';
 import 'package:sandwich_shop/main.dart';
+import 'package:sandwich_shop/models/cart.dart';
+import 'package:sandwich_shop/views/order_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('App', () {
+    testWidgets('renders OrderScreen as the home screen',
+        (WidgetTester tester) async {
+      const App app = App();
+      await tester.pumpWidget(app);
+      expect(find.byType(OrderScreen), findsOneWidget);
+    });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    testWidgets('provides Cart through ChangeNotifierProvider',
+        (WidgetTester tester) async {
+      const App app = App();
+      await tester.pumpWidget(app);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      expect(find.byType(ChangeNotifierProvider<Cart>), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      expect(find.byType(MaterialApp), findsOneWidget);
+    });
+
+    testWidgets('displays logo in app bar', (WidgetTester tester) async {
+      const App app = App();
+      await tester.pumpWidget(app);
+
+      final appBarFinder = find.byType(AppBar);
+      expect(appBarFinder, findsOneWidget);
+
+      final appBarImagesFinder = find.descendant(
+        of: appBarFinder,
+        matching: find.byType(Image),
+      );
+      expect(appBarImagesFinder, findsOneWidget);
+
+      final Image logoImage = tester.widget(appBarImagesFinder);
+      expect(
+          (logoImage.image as AssetImage).assetName, 'assets/images/logo.png');
+    });
+
+    testWidgets('displays app bar title', (WidgetTester tester) async {
+      const App app = App();
+      await tester.pumpWidget(app);
+
+      expect(find.text('Sandwich Counter'), findsOneWidget);
+    });
+
+    testWidgets('displays cart indicator with initial values',
+        (WidgetTester tester) async {
+      const App app = App();
+      await tester.pumpWidget(app);
+
+      expect(find.text('Cart: 0 items - £0.00'), findsOneWidget);
+    });
+
+    testWidgets('has proper app structure with Provider and MaterialApp',
+        (WidgetTester tester) async {
+      const App app = App();
+      await tester.pumpWidget(app);
+
+      expect(find.byType(ChangeNotifierProvider<Cart>), findsOneWidget);
+      expect(find.byType(MaterialApp), findsOneWidget);
+
+      final OrderScreen orderScreen = tester.widget(find.byType(OrderScreen));
+      expect(orderScreen.maxQuantity, equals(5));
+
+      final MaterialApp materialApp = tester.widget(find.byType(MaterialApp));
+      expect(materialApp.title, equals('Sandwich Shop App'));
+      expect(materialApp.debugShowCheckedModeBanner, equals(false));
+    });
   });
 }
